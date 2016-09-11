@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="Zh_CN" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<style>
+    .divider {
+        height: 5px;
+        color: blue;
+    }
+</style>
+<body>
+<div id="app">
+    {{message}}
+</div>
+<div id="doubleDataBind">
+    <p>{{dataBind}}</p>
+    <input v-model="dataBind"/>
+</div>
+<div id="listApp">
+    <ul>
+        <li v-for="todo in todos">
+            <span>编号:</span>{{$index}}
+            <span>姓名:</span> {{todo.text}}
+            <br>
+            <span>年龄:</span>{{todo.age}}
+        </li>
+    </ul>
+    <ul>
+        <template v-for="todo of todos">
+            <li>
+                <span>编号:</span>{{$index}}
+                <span>姓名:</span> {{todo.text}}
+                <br>
+                <span>年龄:</span>{{todo.age}}
+            </li>
+            <li class="divider"></li>
+        </template>
+    </ul>
+    <ul>
+        <li v-for="(myIndex,todo) in todos">
+            <span>编号吗:</span>{{myIndex}}
+            <span>姓名:</span> {{todo.text}}
+            <br>
+            <span>年龄:</span>{{todo.age}}
+        </li>
+    </ul>
+</div>
+<div id="inputDo">
+    <p>{{inputData}}</p>
+    <button v-on:click="reverseMessage">Reverse Message</button>
+    <input type="button" v-on:clcik="reverseMessage" value="反转">
+</div>
+<div id="addOrdelete">
+    <input v-model="AddOrDel" v-on:keyup.enter="addTodo"/>
+    <ul>
+        <li v-for="todo in todos">
+            <span>{{todo.text}}</span>
+            <button v-on:click="removeTodo($index)">删除</button>
+        </li>
+    </ul>
+</div>
+<div id="whatIf">
+    <p v-if="greeting">变异方法
+
+        Vue.js 包装了被观察数组的变异方法，故它们能触发视图更新。被包装的方法有：
+
+        push()
+        pop()
+        shift()
+        unshift()
+        splice()
+        sort()
+        reverse()</p>
+    <button @click="hiddenOrShow">显示/隐藏</button>
+
+</div>
+<ul id="repeat-object" class="demo">
+    <li v-for="value in object">
+        {{ $key }} : {{ value }}
+    </li>
+</ul>
+<div id="idont">
+    <span v-for="n in 10">{{ n }} </span>
+</div>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            message: "你好世界"
+        }
+    });
+    // 这边要对控件进行初始化，要不然他没法发挥作用
+    new Vue({
+        el: "#doubleDataBind",
+        data: {
+            dataBind: "数据"
+        }
+    });
+    new Vue({
+        el: "#listApp",
+        data: {
+            todos: [
+                {text: "吴培基", age: 24},
+                {text: "小需需", age: 18},
+                {text: "小明", age: 10}
+            ]
+        }
+    });
+    new Vue({
+        el: "#inputDo",
+        data: {
+            inputData: "Hello "
+        },
+        methods: {
+            reverseMessage: function () {
+                this.inputData = this.inputData.split('')
+            }
+        }
+    });
+    new Vue({
+        el: "#addOrdelete",
+        data: {
+            AddOrDel: "",
+            todos: [
+                {text: 'Add some todos'}
+            ]
+        },
+        methods: {
+            addTodo: function () {
+                var text = this.AddOrDel.trim();
+                if (text) {
+                    this.todos.push({text: text});
+                    this.AddOrDel = '';
+                }
+
+            },
+            removeTodo: function (index) {
+                this.todos.splice(index, 1);
+            }
+        }
+    })
+    new Vue({
+        el: "#whatIf",
+        data: {
+            greeting: true
+        },
+        methods: {
+            hiddenOrShow: function () {
+                this.greeting = !this.greeting;
+            }
+        }
+    })
+    new Vue({
+        el: "#repeat-object",
+        data: {
+            object: {
+                FirstName: 'John',
+                LastName: 'Doe',
+                Age: 30
+            }
+
+        }
+    })
+    new Vue({
+        el:"#idont",
+        data:{
+            n:9
+        }
+    })
+</script>
+</body>
+</html>

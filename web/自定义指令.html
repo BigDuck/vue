@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-demo="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../node_modules/vue/dist/vue.js"></script>
+
+<body>
+<h2>可以用 Vue.directive(id, definition) 方法注册一个全局自定义指令，
+    它接收两个参数指令 ID 与定义对象。也可以用组件的 directives 选项注册一个局部自定义指令。</h2>
+<h4>bind：只调用一次，在指令第一次绑定到元素上时调用。
+
+    update： 在 bind 之后立即以初始值为参数第一次调用，之后每当绑定值变化时调用，参数为新值与旧值。
+
+    unbind：只调用一次，在指令从元素上解绑时调用。</h4>
+<div v-my-directive="什么鬼"></div>
+<br>
+<h5>el: 指令绑定的元素。
+    vm: 拥有该指令的上下文 ViewModel。
+    expression: 指令的表达式，不包括参数和过滤器。
+    arg: 指令的参数。
+    name: 指令的名字，不包含前缀。
+    modifiers: 一个对象，包含指令的修饰符。
+    descriptor: 一个对象，包含指令的解析结果。</h5>
+<div id="demo" v-demo:hello.a.b="msg"></div>
+<hr>
+<br>
+<div id="demoTwo" v-demo:test.d.e="helloworld"></div>
+<hr/>
+<div id="color" v-mydir="{color:'red',text:'红色'}"></div>
+<div id="params">
+    <h3>params
+
+        自定义指令可以接收一个 params 数组，指定一个特性列表，Vue 编译器将自动提取绑定元素的这些特性。例如：</h3>
+    <div v-example a="hi"></div>
+    <div v-example v-bind:a="someValue"></div>
+    <hr>
+    <button @click="changeA">点击改变A的值</button>
+</div>
+<div id="twoWay">
+    <div>
+    </div>
+    <input v-twoway="a" type="text" placeholder="没什么啊"/>
+</div>
+<script>
+    Vue.directive('my-directive', {
+        bind: function () {
+
+        },
+        update: function (newValue, oldValue) {
+
+        },
+        unbind: function () {
+
+        }
+    });
+    Vue.directive('demo', {
+        bind: function () {
+            console.log('demo bound!')
+        },
+        update: function (value) {
+            this.el.innerHTML =
+                    'name - ' + this.name + '<br>' +
+                    'expression - ' + this.expression + '<br>' +
+                    'argument - ' + this.arg + '<br>' +
+                    'modifiers - ' + JSON.stringify(this.modifiers) + '<br>' +
+                    'value - ' + value
+        }
+    });
+    Vue.directive('mydir', function (value) {
+        console.log(value);
+        console.log(value.color);
+        console.log(value.text);
+    });
+
+    var demo = new Vue({
+        el: '#demo',
+        data: {
+            msg: 'hello!'
+        }
+    });
+    var demotwo = new Vue({
+        el: "#demoTwo",
+        data: {
+            helloworld: "世界你好"
+        }
+    });
+    new Vue({
+        el: "#color"
+
+    });
+    Vue.directive('example', {
+        params: ['a'],
+        paramWatchers: {
+            a: function (val, oldVal) {
+                console.log("改变了：" + val);
+            }
+        },
+        bind: function () {
+            console.log("a=" + this.params.a);// -> "hi"
+        }
+    });
+    new Vue({
+        el: "#params",
+        data: {
+            someValue: "hello"
+        },
+        methods: {
+            changeA: function () {
+                this.someValue = "world"
+            }
+        }
+    });
+    /**
+     * 如果指令想向 Vue 实例写回数据，
+     * 则在指令定义对象中指定 twoWay: true 。
+     * 该选项允许在指令中使用 this.set(value):
+     */
+    Vue.directive("twoway", {
+        twoWay: true,
+        bind: function () {
+            this.handler = function () {
+                this.set(this.el.value);
+            }.bind(this)
+            this.el.addEventListener('input', this.handler);
+        },
+        unbind: function () {
+            this.el.removeEventListener('input', this.handler);
+        },
+        update: function (val, oldVal) {
+            console.log(val);
+            console.log(oldVal);
+        }
+    });
+    new Vue({
+        el: "#twoWay",
+        data: {
+            a: 11
+        }
+    })
+</script>
+</body>
+</html>

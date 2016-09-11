@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../node_modules/vue/dist/vue.js"></script>
+
+<body>
+<div id="msgBind">
+    <h1>{{title}}</h1>
+
+    <span>message is:{{message}}</span>
+    <input v-model="message" type="text" placeholder="edit something"/>
+    <input type="checkbox" id="checkbox" v-model="checked">
+    <label for="checkbox">{{ checked }}</label>
+    <br>
+</div>
+<div id="checkBoxChange">
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames">
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="mike" v-model="checkedNames">
+    <label for="mike">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames | json }}</span>
+</div>
+<script>
+//    new Vue({
+//        el: document.body,
+//        data: {
+//            title: "表单"
+//        }
+//    })
+    new Vue({
+        el: "#msgBind",
+        data:{
+            title: "表单"
+        }
+    });
+    new Vue({
+        el: "#checkBoxChange",
+        data: {
+            checkedNames: []
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<body>
+<div id="test" class="item-{{item}}">
+    <h1>{{number+1}}</h1>
+    <h2>{{people | capitalize }}</h2>
+    <a href="{{url}}">百度</a>
+    <a :href.literal="/a/b/c">修饰符 (Modifiers) 是以半角句号 </a>
+    <a v-bind:href="urlTwo">teo</a>
+    <button @click="hello" >点我啊</button>
+</div>
+</body>
+<script>
+    new Vue({
+        el: "#test",
+        data: {
+            item: "1",
+            number: 2,
+            people: "helloworl",
+            url:"www.baidu.com",
+            urlTwo:"www.qq.com"
+        },
+        methods:{
+            hello:function () {
+                alert("hello world");
+            }
+        }
+    })
+</script>
+</html>

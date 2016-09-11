@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义过滤器</title>
+</head>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<body>
+<div id="diyFilter">
+    <span v-text="meaages |reverse"></span>
+    <p v-text="happy | wrap 'wupeiji' 'xiaoxuxu'"></p>
+    <input v-model="wpj | currencyDisplay" />
+    <p>{{wpj}}</p>
+</div>
+<script>
+    // 反转字符串的过滤器
+    Vue.filter('reverse', function (value) {
+        return value.split('').reverse().join('');
+    });
+    // 过滤器函数可以接收任意数量的参数：
+    Vue.filter('wrap', function (value,begin,end) {
+        return begin+value+end;
+    });
+
+    // 不过也可以定义一个过滤器，在把来自视图（<input> 元素）的值写回模型之前转化它
+    Vue.filter('currencyDisplay', {
+        // model -> view
+        // 在更新 `<input>` 元素之前格式化值
+        read: function(val) {
+            console.log(val);
+            return '￥'+val.toFixed(2)
+        },
+        // view -> model
+        // 在写回数据之前格式化值
+        write: function(val, oldVal) {
+            console.log("write"+val);
+            var number = +val.replace(/[^\d.]/g, '');
+            console.log(number);
+            return isNaN(number) ? 0 : parseFloat(number.toFixed(2))
+        }
+    });
+    new Vue({
+        el: "#diyFilter",
+        data: {
+            meaages: "没意见你想怎么样都随你",
+            happy:"like",
+            wpj:0
+        }
+    });
+</script>
+</body>
+</html>

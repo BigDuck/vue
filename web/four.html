@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/vue/dist/vue.js"></script>
+</head>
+<style>
+    /* 必需 */
+    .expand-transition {
+        transition: all .3s ease;
+        height: 30px;
+        padding: 10px;
+        background-color: #eee;
+        overflow: hidden;
+    }
+
+    /* .expand-enter 定义进入的开始状态 */
+    /* .expand-leave 定义离开的结束状态 */
+    .expand-enter, .expand-leave {
+        height: 0;
+        padding: 0 10px;
+        opacity: 0;
+    }
+</style>
+<body>
+<div id="cb">
+    <h1>{{title}}</h1>
+
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames">
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+    <label for="mike">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames | json }}</span>
+</div>
+<div id="rb">
+    <input type="radio" id="one" value="one" v-model="picked">
+    <label for="one"> ONE </label>
+    <input type="radio" id="two" value="two" v-model="picked">
+    <label for="two">TWO</label>
+    <span>Picked: {{ picked }}</span>
+</div>
+<div id="selectedForm">
+    <h1>{{title}}</h1>
+    <select v-model="selected">
+        <option selected>告诉我你的选择</option>
+        <option v-for="value in values" value="{{value}}">{{value}}</option>
+    </select>
+    <p>选择了{{selected}}</p>
+</div>
+<div id="selectedMul">
+    <h1>{{title}}</h1>
+    <select v-model="seleted" multiple>
+        <option v-for="value in values" value="{{value}}">{{value}}</option>
+    </select>
+    <p>选择了:{{seleted}}</p>
+</div>
+<div id="DIY">
+    <div v-if="show" transition="expand">hello</div>
+
+    <input type="checkbox" v-model="toggle" v-bind:true-value="a" v-bind:false-value="b"/>选拔
+    <p>{{toggle}}</p>
+    <input v-model="age" number>
+    <p>{{age}}</p>
+
+</div>
+<script>
+    new Vue({
+        el: "#cb",
+        data: {
+            title: "这是一个关于多选的",
+            checkedNames: []
+        }
+    });
+    new Vue({
+        el: "#rb",
+        data: {
+            picked: ""
+        }
+    });
+    new Vue({
+        el: "#selectedForm",
+        data: {
+            title: "下拉单选",
+            values: ['word', 'haha', 'BB', 'CC', 'DD', 'EE'],
+            selected: "告诉我你的选择"
+        }
+    });
+    new Vue({
+        el: "#selectedMul",
+        data: {
+            title: "多选的",
+            values: ['AA', 'BB', 'CC', 'DD', 'EE', 'FF', 'GG'],
+            seleted: []
+        }
+
+
+    });
+    var vms = new Vue({
+        el: "#DIY",
+        data: {
+            toggle: [],
+            age: 0,
+            show:true
+        }
+    });
+
+</script>
+</body>
+</html>

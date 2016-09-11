@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<style rel="stylesheet">
+    .classA {
+        background-color: aqua;
+    }
+
+    .classB {
+        background-color: blue;
+    }
+</style>
+<body>
+
+<div id="example">
+    a={{a}},b={{b}}
+</div>
+<div id="classChange">
+    <h2 class="static" v-bind:class="{'classA':isA,'classB':isB}">我是变色</h2>
+    <button @click="change" v-bind:class="classObject">变色吧</button>
+    <h2 v-bind:style="{color:activeColor,fontSize:fontSize + 'px'}">v-bind:style 的对象语法十分直观——看着非常像 CSS，其实它是一个 JavaScript
+        对象。CSS 属性名可以用驼峰式（camelCase）或短横分隔命名（kebab-case）：
+    </h2>
+    <h3 v-bind:style="[objectStyle,objectTwo]">直接绑定到一个样式对象通常更好，让模板更清晰：
+
+    </h3>
+    <h4 v-if="ok">这是yes</h4>
+    <h5 v-else>这是No</h5>
+    <template v-if="ok">
+        <h1>这是包含很多ok的</h1>
+        <h2 v-bind:class="{'classA':isA}">这是包含很多ok的</h2>
+        <h3>这是包含很多ok的</h3>
+    </template>
+    <div v-show="ok">
+        <h2>v-show 不支持template</h2>
+        <h1>展示</h1>
+        <h4>展示</h4>
+        <h5>展示</h5>
+
+    </div>
+    <div v-if="Math.random() > 0.5">
+        Sorry
+    </div>
+    <div v-else>
+        Not sorry
+    </div>
+    <!--
+    将 v-show 用在组件上时，因为指令的优先级 v-else 会出现问题。因此不要这样做：
+    把v-else也换成v-show
+    -->
+    <h2 v-show="ok">很show</h2>
+    <h2 v-else>一般来说，v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗。因此，如果需要频繁切换 v-show 较好，如果在运行时条件不大可能改变 v-if 较好</h2>
+
+    <button @click="okChange">看下ok不ok</button>
+
+</div>
+<div id="example-2">
+    <button v-on:click="say('hi')">Say Hi</button>
+    <button v-on:click="say('what')">Say What</button>
+    <button v-on:click="say('hello!', $event)">Submit</button>
+
+</div>
+<script>
+    var vm = new Vue({
+        el: "#example",
+        data: {
+            a: 1
+        },
+        computed: {// 计算
+            b: function () {
+                return this.a + 1;
+            }
+        }
+    });
+    new Vue({
+        el: "#classChange",
+        data: {
+            isA: true,
+            isB: false,
+            activeColor: 'blue',
+            fontSize: 20,
+            objectStyle: {
+                color: 'red',
+                fontSize: '40px'
+            },
+            objectTwo: {
+                background: 'yellow'
+            },
+            ok: true
+
+        },
+        methods: {
+            change: function () {
+                this.isA = !this.isA;
+                this.isB = !this.isB;
+            },
+            okChange: function () {
+                this.ok = !this.ok;
+            }
+        }
+    });
+    new Vue({
+        el: '#example-2',
+        methods: {
+            say: function (msg) {
+                alert(msg)
+            },
+            say:function (msg,event) {
+                alert(event.preventDefault);
+            }
+        }
+    });
+</script>
+</body>
+</html>
